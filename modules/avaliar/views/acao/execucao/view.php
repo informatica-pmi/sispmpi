@@ -103,11 +103,7 @@ use app\models\Status;
 
                                 <?= Html::a(
                                     $index > 0 ? ", {$arquivo->nome_original}" : $arquivo->nome_original,
-                                    "@web/{$arquivo->path}",
-                                    [
-                                        'target' => '_blank',
-                                        'rel' => 'noreferrer noopener',
-                                    ]
+                                    ['/arquivo/download', 'token' => $arquivo->token]
                                 ) ?>
                             <?php endforeach; ?>
                         <?php else : ?>

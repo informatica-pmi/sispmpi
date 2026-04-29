@@ -5,6 +5,8 @@ namespace app\models;
 use Yii;
 use app\modules\elaborar\models\Publicacao;
 use app\modules\executar\models\AcaoExecucaoArquivo;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "arquivo".
@@ -15,12 +17,14 @@ use app\modules\executar\models\AcaoExecucaoArquivo;
  * @property float $tamanho
  * @property string $extensao
  * @property string $path
+ * @property string $token
  *
  * @property AcaoExecucaoArquivo[] $acaoExecucaoArquivos
  * @property Publicacao[] $publicacaos
  * @property Publicacao[] $publicacaos0
  * @property Publicacao[] $publicacaos1
  * @property Publicacao[] $publicacaos2
+ * @property string $generateToken
  */
 class Arquivo extends \yii\db\ActiveRecord
 {
@@ -48,8 +52,9 @@ class Arquivo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nome_original', 'nome_servidor', 'tamanho', 'extensao', 'path'], 'required'],
+            [['nome_original', 'nome_servidor', 'tamanho', 'extensao', 'path', 'token'], 'required'],
             [['tamanho'], 'number'],
+            [['token'], 'string', 'max' => 32],
             [['nome_original', 'nome_servidor', 'path'], 'string', 'max' => 255],
             [['extensao'], 'string', 'max' => 20],
             [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => ['pdf', 'png', 'jpg', 'xls', 'xlsx', 'doc', 'docx']],
@@ -69,75 +74,99 @@ class Arquivo extends \yii\db\ActiveRecord
             'tamanho' => 'Tamanho',
             'extensao' => 'Extensao',
             'path' => 'Path',
+            'token' => 'Token',
         ];
     }
 
-     /**
-     * salvando arquivo
-     * @param $folder
-     * @param $id
-     * @param string $path
-     * @return bool|int
+    /**
      * @throws \yii\base\Exception
      */
-    public function upload($folder, $id = '', $path = '')
+    public function upload($folder, ?int $id = null, string $path = '')
     {
-        $baseUpload = empty($path) && empty($id) ? Yii::getAlias("{$folder}") : Yii::getAlias("{$folder}/$id/{$path}");
-        $basePath = Yii::getAlias('@webroot/' . $baseUpload);
+        $baseUpload = empty($path) && empty($id)
+            ? Yii::getAlias("$folder")
+            : Yii::getAlias("$folder/$id/$path");
+
+        $basePath = Yii::getAlias('@app/' . $baseUpload);
         $arquivo = $this->file;
 
         if (!file_exists($basePath)) {
-            mkdir($basePath, 0775, true);
+            FileHelper::createDirectory($basePath);
         }
 
-        $nomeDb = Yii::$app->security->generateRandomString() . '.' . $arquivo->extension;
-        $fullPath = $baseUpload . '/' . $nomeDb;
+        $nomeServidor = Yii::$app->security->generateRandomString() . '.' . $arquivo->extension;
 
-        $arquivo->saveAs($fullPath);
-        $modelArquivo = new Arquivo();
-        $modelArquivo->nome_original = $arquivo->baseName;
-        $modelArquivo->nome_servidor = $nomeDb;
-        $modelArquivo->tamanho = $arquivo->size;
-        $modelArquivo->extensao = $arquivo->extension;
-        $modelArquivo->path = $fullPath;
-        $modelArquivo->save(false);
-        return $modelArquivo->id;
+        if ($arquivo->saveAs($basePath . '/' . $nomeServidor)) {
+            $modelArquivo = new Arquivo();
+            $modelArquivo->nome_original = $arquivo->baseName;
+            $modelArquivo->nome_servidor = $nomeServidor;
+            $modelArquivo->tamanho = $arquivo->size;
+            $modelArquivo->extensao = $arquivo->extension;
+            $modelArquivo->path = $baseUpload . '/' . $nomeServidor;
+            $modelArquivo->token = static::generateToken();
+
+            if ($modelArquivo->save(false)) {
+                return $modelArquivo->id;
+            }
+        }
+
+        return false;
     }
 
-    public function uploads($folder, $id = '', $path = '')
+    /**
+     * @throws \yii\base\Exception
+     */
+    public function uploads($folder, ?int $id = null, string $path = '')
     {
         if ($this->validate(['files'])) {
-            $baseUpload = empty($path) && empty($id) ?
-                Yii::getAlias("{$folder}") :
-                Yii::getAlias("{$folder}/$id/{$path}");
+            $baseUpload = empty($path) && empty($id)
+                ? Yii::getAlias("$folder")
+                : Yii::getAlias("$folder/$id/$path");
 
-            $basePath = Yii::getAlias('@webroot/' . $baseUpload);
+            $basePath = Yii::getAlias('@app/' . $baseUpload);
 
             if (!file_exists($basePath)) {
-                mkdir($basePath, 0775, true);
+                FileHelper::createDirectory($basePath);
             }
 
             $arquivoIds = [];
 
             foreach ($this->files as $arquivo) {
-                $nomeDb = Yii::$app->security->generateRandomString() . '.' . $arquivo->extension;
-                $fullPath = $baseUpload . '/' . $nomeDb;
+                $nomeServidor = Yii::$app->security->generateRandomString() . '.' . $arquivo->extension;
 
-                $arquivo->saveAs($fullPath);
-                $modelArquivo = new Arquivo();
-                $modelArquivo->nome_original = $arquivo->baseName;
-                $modelArquivo->nome_servidor = $nomeDb;
-                $modelArquivo->tamanho = $arquivo->size;
-                $modelArquivo->extensao = $arquivo->extension;
-                $modelArquivo->path = $fullPath;
-                $modelArquivo->save(false);
-                $arquivoIds[] = $modelArquivo->id;
+                if ($arquivo->saveAs($basePath . '/' . $nomeServidor)) {
+                    $modelArquivo = new Arquivo();
+                    $modelArquivo->nome_original = $arquivo->baseName;
+                    $modelArquivo->nome_servidor = $nomeServidor;
+                    $modelArquivo->tamanho = $arquivo->size;
+                    $modelArquivo->extensao = $arquivo->extension;
+                    $modelArquivo->path = $baseUpload . '/' . $nomeServidor;
+                    $modelArquivo->token = static::generateToken();
+
+                    if ($modelArquivo->save(false)) {
+                        $arquivoIds[] = $modelArquivo->id;
+                    }
+                }
             }
 
             return $arquivoIds;
         }
 
         return false;
+    }
+
+    /**
+     * @throws \yii\base\Exception
+     */
+    public static function generateToken(int $length = 32): string
+    {
+        do {
+            $token = Yii::$app->security->generateRandomString($length);
+
+            $exists = static::find()->where(['token' => $token])->exists();
+        } while ($exists);
+
+        return $token;
     }
 
     /**

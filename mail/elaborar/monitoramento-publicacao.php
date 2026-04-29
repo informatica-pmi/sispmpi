@@ -21,7 +21,7 @@ use yii\helpers\Url;
     </p>
 
     <p>
-        Anote o nome, matrícula, telefone institucional, e-mail institucional, cargo e unidade administrativa e
+        Anote o nome, Masp/matrícula, telefone institucional, e-mail institucional, cargo e unidade administrativa e
         repasse essas informações para o Auditor, para que o mesmo proceda ao cadastro dos responsáveis pela execução
         de cada ação.
     </p>

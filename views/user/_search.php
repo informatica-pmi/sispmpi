@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nome') ?>
 
-    <?= $form->field($model, 'matricula') ?>
+    <?= $form->field($model, 'masp') ?>
 
     <?= $form->field($model, 'login') ?>
 

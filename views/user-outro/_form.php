@@ -73,7 +73,7 @@ use app\base\Txt;
             <?= $form->field($model, 'cargo')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'matricula')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'masp')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-3">
             <?= $form->field($model, 'telefone')->widget(MaskedInput::className(), [

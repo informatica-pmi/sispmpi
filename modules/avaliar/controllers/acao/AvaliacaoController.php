@@ -59,10 +59,6 @@ class AvaliacaoController extends Controller
 
         $modelsAcaoAvaliacaoRecomendacao = $modelAcao->acaoAvaliacaoRecomendacaos;
 
-        $modelsAcaoAvaliacaoRecomendacao = empty($modelsAcaoAvaliacaoRecomendacao) ?
-            [new AcaoAvaliacaoRecomendacao()] :
-            $modelsAcaoAvaliacaoRecomendacao;
-
         $isPost = Yii::$app->request->isPost;
 
         if ($isPost) {

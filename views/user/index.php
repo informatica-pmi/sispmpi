@@ -2,8 +2,9 @@
 
 use app\models\User;
 use yii\grid\GridView;
-use yii\helpers\ArrayHelper;
 use app\components\helpers\Button;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\pesquisa\UserSearch */
@@ -39,8 +40,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => User::getPerfil() === User::PERFIL_AUDITOR ?
                     User::getFilterAuditor() :
                     User::getFilterCge(),
+                'format' => 'html',
                 'value' => function ($model) {
-                    return implode(", ", ArrayHelper::getColumn($model->authAssignments, 'item_name'));
+                    $items = '';
+                    foreach ($model->authAssignments as $authAssignment) {
+                        $items .= '<span class="d-block">';
+                        if ($authAssignment->active) {
+                            $items .= Html::tag('i', '', ['class' => 'fas fa-check text-success mr-2']);
+                        } else {
+                            $items .= Html::tag('i', '', ['class' => 'far fa-clock text-warning mr-2']);
+                        }
+                        $items .= $authAssignment->item_name;
+                        $items .= '</span>';
+                    }
+
+                    return $items;
                 }
             ],
 
@@ -65,9 +79,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             $model,
                             'far fa-edit',
                             '',
-                            in_array($model->authAssignment->item_name, User::getFilterAuditor()) ?
-                                ['/user-outro/update', 'id' => $model->id] :
-                                $url,
+                            empty(
+                                array_intersect(
+                                    [User::PERFIL_ADMINISTRADOR, User::PERFIL_AUDITOR],
+                                    ArrayHelper::map($model->authAssignments, 'item_name', 'item_name')
+                                )
+                            ) ? ['/user-outro/update', 'id' => $model->id] : $url,
                             true,
                             'Editar'
                         );

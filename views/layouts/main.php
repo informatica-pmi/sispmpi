@@ -49,21 +49,15 @@ AppAsset::register($this);
                         <?php if (ArrayHelper::isIn(User::PERFIL_ADMINISTRADOR, ArrayHelper::getColumn(Yii::$app->user->identity->authAssignments, 'item_name'))) : ?>
                             <h6 class="dropdown-header text-left text-sm text-black-50">Alterar perfil</h6>
 
-                            <?= Html::a(
-                                User::getPerfil() == User::PERFIL_ADMINISTRADOR ?
-                                    Html::tag('span', User::PERFIL_ADMINISTRADOR, ['class' => 'mr-2']) . Html::tag('i', '', ['class' => 'fas fa-check text-success']) :
-                                    Html::tag('span', User::PERFIL_ADMINISTRADOR),
-                                ['@admin/monitoramento/update', 'toAdmin' => true],
-                                ['class' => 'dropdown-item text-sm']
-                            ) ?>
-
-                            <?= Html::a(
-                                User::getPerfil() == User::PERFIL_OBSERVADOR ?
-                                    Html::tag('span', User::PERFIL_OBSERVADOR, ['class' => 'mr-2']) . Html::tag('i', '', ['class' => 'fas fa-check text-success']) :
-                                    Html::tag('span', User::PERFIL_OBSERVADOR),
-                                ['@admin/monitoramento/update'],
-                                ['class' => 'dropdown-item text-sm']
-                            ) ?>
+                            <?php foreach (Yii::$app->user->identity->authAssignments as $authAssignment) : ?>
+                                <?= Html::a(
+                                    User::getPerfil() === $authAssignment->item_name
+                                        ? Html::tag('span', $authAssignment->item_name, ['class' => 'mr-2']) . Html::tag('i', '', ['class' => 'fas fa-check text-success'])
+                                        : Html::tag('span', $authAssignment->item_name),
+                                    ['@admin/alterar-perfil/update', 'to' => $authAssignment->item_name],
+                                    ['class' => 'dropdown-item text-sm']
+                                ) ?>
+                            <?php endforeach; ?>
 
                             <div class="dropdown-divider"></div>
                         <?php endif; ?>
@@ -390,9 +384,9 @@ AppAsset::register($this);
         </div>
 
         <footer class="main-footer">
-            &copy; Controladoria-Geral do Município de Itabirito
+            &copy; Diretoria de Tecnologia da Informação e Comunicação - Controladoria-Geral do Estado
             <div class="float-right d-none d-sm-inline-block">
-                <span>Version 3.4.4</span>
+                <span>Version 3.5.1</span>
             </div>
         </footer>
 

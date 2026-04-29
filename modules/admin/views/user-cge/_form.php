@@ -1,10 +1,11 @@
 <?php
 
+use app\models\Status;
+use app\models\User;
+use kartik\form\ActiveField;
+use kartik\form\ActiveForm;
 use yii\helpers\Html;
 use yii\widgets\MaskedInput;
-use kartik\form\ActiveForm;
-use kartik\form\ActiveField;
-use app\models\Status;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
@@ -55,10 +56,23 @@ use app\models\Status;
         </div>
     </div>
 
+    <?= $form->field($model, 'perfis')->multiselect(User::getFilterCge()) ?>
+
     <div class="form-group">
         <?= Html::submitButton('Salvar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>
+
+<?php
+
+$js = <<<JS
+    const perfilAdministrador = 'Administrador';
+
+    $("input[value='" + perfilAdministrador + "']").on('click', function(e) {
+        e.preventDefault();
+    });
+JS;
+
+$this->registerJs($js);

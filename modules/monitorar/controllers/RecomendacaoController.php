@@ -48,14 +48,12 @@ class RecomendacaoController extends Controller
      */
     public function actionIndex($filter = null)
     {
-        $userOrgaoId = Yii::$app->session->get('observador_orgao_id') ?? User::getIdentidade('orgao_id');
-
-        $modelOrgao = Orgao::findOne($userOrgaoId);
+        $modelOrgao = Orgao::findOne(User::getIdentidade('orgao_id'));
 
         $userOrgaoNome = $modelOrgao->nome;
 
         $modelPlano = PlanoIntegridade::findOne([
-            'orgao_id' => $userOrgaoId,
+            'orgao_id' => $modelOrgao->id,
             'status' => [Status::PLANO_PUBLICADO, Status::PLANO_ELABORACAO]
         ]);
 

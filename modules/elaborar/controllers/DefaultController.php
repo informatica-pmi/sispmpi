@@ -43,11 +43,11 @@ class DefaultController extends Controller
             return $this->redirect(['/site/acesso-negado']);
         }
 
-        $orgao = Yii::$app->session->get('observador_orgao_id') ?? User::getIdentidade('orgao_id');
+        $userOrgaoId = User::getIdentidade('orgao_id');
 
         $planoExists = PlanoIntegridade::find()
             ->where(['in', 'status', [Status::PLANO_ELABORACAO, Status::PLANO_N_INICIADO, Status::PLANO_PUBLICADO]])
-            ->andWhere(['orgao_id' => $orgao])
+            ->andWhere(['orgao_id' => $userOrgaoId])
             ->one();
 
         $isObservador = User::getPerfil() === User::PERFIL_OBSERVADOR;
@@ -60,7 +60,7 @@ class DefaultController extends Controller
             $modelPlano->edicao = '1° Edição';
             $modelPlano->status = Status::PLANO_N_INICIADO;
             $modelPlano->versao = 1;
-            $modelPlano->orgao_id = $orgao;
+            $modelPlano->orgao_id = $userOrgaoId;
 
             $modelPlano->save();
         }
@@ -77,9 +77,9 @@ class DefaultController extends Controller
             'hasPublicacao' => $hasDefaultModulePermission ? '' : 'disabled',
             'hasIntegridade' => Universal::temPermissao('plano-integridade-elaborar', $modelPlano) ? '' : 'disabled',
             'hasAcao' => Universal::temPermissao('plano-acao-elaborar', $modelPlano) &&
-                (!isset($modelPlano->publicacao) || !is_null($modelPlano->publicacao->plano_acao_arquivo)) ?
-                    '' :
-                    'disabled',
+            (!isset($modelPlano->publicacao) || !is_null($modelPlano->publicacao->plano_acao_arquivo)) ?
+                '' :
+                'disabled',
             'hasAcaoFile' => $modelPlano->publicacao && !is_null($modelPlano->publicacao->plano_acao_arquivo),
         ];
 

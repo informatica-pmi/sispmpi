@@ -13,7 +13,7 @@ use app\components\helpers\Universal;
 
 /* @var $this yii\web\View */
 /* @var $modelAcao app\models\Acao */
-/* @var $modelAcaoExecucao app\models\AcaoExecucao */
+/* @var $modelAcaoExecucao app\modules\executar\models\AcaoExecucao */
 /* @var $acaoExecucaoEvidenciaFiles app\modules\executar\models\AcaoExecucaoArquivo[] */
 /* @var $optionsFatorLimitante app\models\FatorLimitante[] */
 /* @var $disabledFieldAcaoExecucaoEvidenciaFiles */
@@ -103,11 +103,7 @@ use app\components\helpers\Universal;
                     <div>
                         <?= Html::a(
                             $acaoExecucaoEvidenciaFile->arquivo->nome_original,
-                            "@web/{$acaoExecucaoEvidenciaFile->arquivo->path}",
-                            [
-                                'target' => '_blank',
-                                'rel' => 'noopener noreferrer',
-                            ]
+                            ['/arquivo/download', 'token' => $acaoExecucaoEvidenciaFile->arquivo->token]
                         ) ?>
                         <?= Html::a(
                             Universal::icon('fas fa-times-circle'),

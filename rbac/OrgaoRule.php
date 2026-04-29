@@ -21,8 +21,6 @@ class OrgaoRule extends Rule
      */
     public function execute($user, $item, $params)
     {
-        $orgaoId = Yii::$app->session->get('observador_orgao_id') ?? User::getIdentidade('orgao_id');
-
-        return isset($params['post']) ? $params['post']->orgao_id ==  $orgaoId : false;
+        return isset($params['post']) ? $params['post']->orgao_id ==  User::getIdentidade('orgao_id') : false;
     }
 }

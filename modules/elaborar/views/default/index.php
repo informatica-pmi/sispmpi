@@ -94,12 +94,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <a
                             href=<?= Url::to(
                                 $modelPlano->publicacao ?
-                                Yii::getAlias("@web/{$modelPlano->publicacao->planoIntegridadeArquivo->path}") :
-                                ['@elaborar/plano-integridade-parcial/index', 'planoId' => $modelPlano->id]
+                                    [
+                                        '/arquivo/download',
+                                        'token' => $modelPlano->publicacao->planoIntegridadeArquivo->token
+                                    ] :
+                                    ['@elaborar/plano-integridade-parcial/index', 'planoId' => $modelPlano->id]
                             ) ?>
                             class="timeline-content"
-                            target="_blank"
-                            rel="noopener noreferrer"
                         >
                             <div class="timeline-number">5</div>
 
@@ -123,12 +124,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="timeline-item <?= $preparePermissions['hasAcao'] ?>">
                         <a
                             href=<?= Url::to($preparePermissions['hasAcaoFile'] ?
-                                Yii::getAlias("@web/{$modelPlano->publicacao->planoAcaoArquivo->path}") :
+                                [
+                                    '/arquivo/download',
+                                    'token' => $modelPlano->publicacao->planoAcaoArquivo->token,
+                                ] :
                                 ['@elaborar/plano-acao-parcial/index', 'planoId' => $modelPlano->id])
-                                                ?>
+                            ?>
                             class="timeline-content"
-                            target="_blank"
-                            rel="noopener noreferrer"
                         >
                             <div class="timeline-number">6</div>
 

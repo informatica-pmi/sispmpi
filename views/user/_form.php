@@ -45,7 +45,7 @@ $readOnly = !ArrayHelper::isIn(User::getPerfil(), [User::PERFIL_ADMINISTRADOR, U
             <?= $form->field($model, 'cargo')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'matricula')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'masp')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-3">
             <?= $form->field($model, 'telefone')->widget(MaskedInput::className(), [
@@ -54,13 +54,17 @@ $readOnly = !ArrayHelper::isIn(User::getPerfil(), [User::PERFIL_ADMINISTRADOR, U
         </div>
     </div>
 
-    <?php if (User::getPerfil() === User::PERFIL_ADMINISTRADOR && $model->perfil != User::PERFIL_ADMINISTRADOR) : ?>
-        <?= $form->field($model, 'orgao_id')->widget(Select2::className(), [
-            'data' => Universal::getDropDown(Orgao::className(), true),
-            'theme' => Select2::THEME_KRAJEE_BS5,
-            'options' => ['placeholder' => Txt::$t['prompt']],
-            'pluginOptions' => ['allowClear' => true]
-        ]) ?>
+    <?php if (User::getPerfil() === User::PERFIL_ADMINISTRADOR) : ?>
+        <?php if (in_array(User::PERFIL_ADMINISTRADOR, $model->perfis)) : ?>
+            <?= $form->field($model, 'perfis')->multiselect(User::getFilterCge()) ?>
+        <?php else: ?>
+            <?= $form->field($model, 'orgao_id')->widget(Select2::className(), [
+                'data' => Universal::getDropDown(Orgao::className(), true),
+                'theme' => Select2::THEME_KRAJEE_BS5,
+                'options' => ['placeholder' => Txt::$t['prompt']],
+                'pluginOptions' => ['allowClear' => true]
+            ]) ?>
+        <?php endif; ?>
     <?php endif; ?>
 
     <div class="form-group">
@@ -73,3 +77,15 @@ $readOnly = !ArrayHelper::isIn(User::getPerfil(), [User::PERFIL_ADMINISTRADOR, U
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+
+$js = <<<JS
+    const perfilAdministrador = 'Administrador';
+
+    $("input[value='" + perfilAdministrador + "']").on('click', function(e) {
+        e.preventDefault();
+    });
+JS;
+
+$this->registerJs($js);

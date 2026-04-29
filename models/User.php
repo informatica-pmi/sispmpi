@@ -27,7 +27,7 @@ use app\modules\admin\models\Orgao;
  *
  * @property Orgao $orgao
  * @property UnidadeAdministrativa $unidadeAdministrativa
- * @property Usuario $cadastradoPor
+ * @property User $cadastradoPor
  * @property User[] $usuarios
  * @property AuthAssignment $authAssignment
  * @property AuthAssignment[] $authAssignments
@@ -50,6 +50,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public $perfil;
 
+    public $perfis;
+
     /**
      * {@inheritdoc}
      */
@@ -65,7 +67,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['nome', 'login', 'email', 'status'], 'required'],
-            [['cargo', 'telefone'], 'required', 'on' => [self::SCENARIO_CGE, self::SCENARIO_UPDATE]],
+            [['cargo', 'telefone', 'perfis'], 'required', 'on' => [self::SCENARIO_CGE, self::SCENARIO_UPDATE]],
             [['masp'], 'required', 'on' => [self::SCENARIO_CGE, self::SCENARIO_UPDATE, self::SCENARIO_OUTRO]],
             [['orgao_id'], 'required', 'on' => [self::SCENARIO_AUDITOR, self::SCENARIO_UPDATE]],
             [['perfil'], 'required', 'on' => self::SCENARIO_OUTRO],
@@ -98,10 +100,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CGE] = ['nome', 'masp', 'login', 'cargo', 'email', 'telefone', 'status'];
+        $scenarios[self::SCENARIO_CGE] = ['nome', 'masp', 'login', 'cargo', 'email', 'telefone', 'status', 'perfis'];
         $scenarios[self::SCENARIO_AUDITOR] = ['nome', 'login', 'orgao_id', 'email', 'status'];
         $scenarios[self::SCENARIO_OUTRO] = ['nome', 'masp', 'login', 'orgao_id', 'unidade_administrativa_id', 'cargo', 'email', 'status', 'telefone', 'perfil'];
-        $scenarios[self::SCENARIO_UPDATE] = ['nome', 'login', 'senha', 'cargo', 'email', 'masp', 'status', 'telefone', 'orgao_id'];
+        $scenarios[self::SCENARIO_UPDATE] = ['nome', 'login', 'senha', 'cargo', 'email', 'masp', 'status', 'telefone', 'orgao_id', 'perfis'];
         return $scenarios;
     }
 
@@ -113,7 +115,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return [
             'id' => 'ID',
             'nome' => 'Nome',
-            'masp' => 'Matricula',
+            'masp' => 'Masp',
             'login' => 'Login',
             'senha' => 'Senha',
             'cargo' => 'Cargo',
@@ -127,6 +129,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'cadastrado_por' => 'Cadastrado Por',
             'created_at' => 'Created At',
             'perfil' => 'Perfil',
+            'perfis' => 'Perfis',
         ];
     }
 

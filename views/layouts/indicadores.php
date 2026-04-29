@@ -79,7 +79,7 @@ AppAsset::register($this);
     <footer class="main-footer ml-0">
         &copy; Diretoria de Tecnologia da Informação e Comunicação - Controladoria-Geral do Estado
         <div class="float-right d-none d-sm-inline-block">
-            <span>Version 3.4.4</span>
+            <span>Version 3.5.1</span>
         </div>
     </footer>
 

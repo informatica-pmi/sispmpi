@@ -79,16 +79,16 @@ class DiagnosticoResultado extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'diagnostico_id' => 'Diagnostico ID',
-            'descricao' => 'Quais os principais resultados em relação ao diagnóstico do ambiente de integridade?',
+            'descricao' => 'Quais os principais resultados obtidos pelo diagnóstico do ambiente de integridade?',
             'objetivos_trabalhados' => 'Qual a visão de futuro em relação ao ambiente de integridade da organização?',
             'objetivos_estrategicos' => 'Quais os objetivos do programa de integridade da organização?',
             'estrutura_governanca' => 'Qual a estrutura de governança e de gestão do programa de integridade?',
             'periodicidade_monitoramentos' => 'Qual a periodicidade dos monitoramentos do programa de integridade?',
             'periodicidade_avaliacoes' => 'Qual a periodicidade das avaliações do programa de integridade?',
             'periodicidade_atualizacoes' => 'Qual a periodicidade das atualizações do programa de integridade?',
-            'aspectos_comunicacao' => 'Quais os principais aspectos devem ser observados na elaboração do plano de comunicação?',
-            'aspectos_capacitacao' => 'Quais os principais aspectos devem ser observados na elaboração do plano de capacitação?',
-            'eixoTematicoIds' => 'Quais os eixos temáticos serão trabalhados no programa de integridade da organização?',
+            'aspectos_comunicacao' => 'Quais os principais aspectos a serem observados na elaboração do plano de comunicação?',
+            'aspectos_capacitacao' => 'Quais os principais aspectos a serem observados na elaboração do plano de capacitação?',
+            'eixoTematicoIds' => 'Quais eixos temáticos serão trabalhados no programa de integridade da organização?',
             'created_at' => 'Created At',
         ];
     }

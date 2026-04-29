@@ -1,10 +1,10 @@
 <?php
 
 use app\models\User;
-use yii\helpers\ArrayHelper;
 use kartik\detail\DetailView;
 use app\components\helpers\Button;
 use app\components\helpers\Universal;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
@@ -28,8 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'Editar',
             [
                 User::getPerfil() === User::PERFIL_AUDITOR && User::getIdentidade('id') != $model->id ?
-                '/user-outro/update' :
-                'update',
+                    '/user-outro/update' :
+                    'update',
                 'id' => $model->id
             ],
             false,
@@ -58,14 +58,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'nome',
-            'matricula',
+            'masp',
             'login',
             'cargo',
             'email:email',
             'telefone',
             [
                 'attribute' => 'perfil',
-                'value' => implode(", ", ArrayHelper::getColumn($model->authAssignments, 'item_name'))
+                'format' => 'html',
+                'value' => function ($form, $widget) {
+                    $model = $widget->model;
+                    $items = '';
+                    foreach ($model->authAssignments as $authAssignment) {
+                        $items .= '<span class="d-block">';
+                        if ($authAssignment->active) {
+                            $items .= Html::tag('i', '', ['class' => 'fas fa-check text-success mr-2']);
+                        } else {
+                            $items .= Html::tag('i', '', ['class' => 'far fa-clock text-warning mr-2']);
+                        }
+                        $items .= $authAssignment->item_name;
+                        $items .= '</span>';
+                    }
+
+                    return $items;
+                }
             ],
             [
                 'attribute' => 'orgao_id',

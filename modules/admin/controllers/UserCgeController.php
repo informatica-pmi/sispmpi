@@ -48,22 +48,21 @@ class UserCgeController extends Controller
 
         $model = new User();
         $model->scenario = User::SCENARIO_CGE;
-
-        $userPerfis = [User::PERFIL_ADMINISTRADOR, User::PERFIL_OBSERVADOR];
+        $model->perfis = [User::PERFIL_ADMINISTRADOR];
 
         if ($model->load(Yii::$app->request->post())) {
             $model->orgao_id = Orgao::ORGAO_CGE;
-            $senha = Yii::$app->security->generateRandomString(6);
+            $senha = Yii::$app->security->generateRandomString(8);
 
             $model->cadastrado_por = User::getIdentidade('id');
             $model->generatePassword($senha);
 
             if ($model->save()) {
-                foreach ($userPerfis as $userPerfil) {
+                foreach ($model->perfis as $userPerfil) {
                     $modelAuthAssignment = new AuthAssignment();
                     $modelAuthAssignment->item_name = $userPerfil;
                     $modelAuthAssignment->user_id = $model->id;
-                    $modelAuthAssignment->active = $userPerfil === User::PERFIL_OBSERVADOR ? Status::STATUS_NAO : Status::STATUS_SIM;
+                    $modelAuthAssignment->active = $userPerfil === User::PERFIL_ADMINISTRADOR;
                     $modelAuthAssignment->created_at = time();
 
                     if (! ($flag = $modelAuthAssignment->save(false))) {

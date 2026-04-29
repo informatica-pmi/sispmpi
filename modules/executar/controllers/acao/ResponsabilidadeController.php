@@ -64,16 +64,14 @@ class ResponsabilidadeController extends Controller
 
         $modelServidor->scenario = Servidor::SCENARIO_EXECUTAR;
 
-        $servidorsEnvolvido = ArrayHelper::getColumn($modelAcao->acaoServidorsEnvolvido, 'servidor');
-
-        $modelsServidor = empty($servidorsEnvolvido) ? [new Servidor()] : $servidorsEnvolvido;
+        $modelsServidor = ArrayHelper::getColumn($modelAcao->acaoServidorsEnvolvido, 'servidor');
 
         Dynamic::scenario($modelsServidor, Servidor::SCENARIO_EXECUTAR);
 
         $request = Yii::$app->request;
 
         if ($modelAcao->load($request->post()) && $modelServidor->load($request->post())) {
-            $newPost['_csrf'] = $request->post('_csrf');
+            $newPost['_pmpiCSRF'] = $request->post('_pmpiCSRF');
             $newPost['Servidor'] = array_filter($request->post('Servidor'), function ($key) {
                 return is_int($key);
             }, ARRAY_FILTER_USE_KEY);
@@ -81,9 +79,7 @@ class ResponsabilidadeController extends Controller
             $request->setBodyParams($newPost);
 
             $oldEnvolvidoIds = ArrayHelper::map($modelsServidor, 'id', 'id');
-
             $modelsServidor = Model::createMultiple(Servidor::className(), $modelsServidor);
-            Dynamic::scenario($modelsServidor, Servidor::SCENARIO_EXECUTAR);
             Model::loadMultiple($modelsServidor, Yii::$app->request->post());
 
             $deletedEnvolvidoIds = array_diff(

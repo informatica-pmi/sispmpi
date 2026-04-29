@@ -2,7 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\AuthAssignment;
+use app\models\Status;
+use app\modules\admin\models\Orgao;
+use Exception;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -121,7 +126,9 @@ class UserController extends Controller
         $oldSenha = $model->senha;
         $model->senha = '';
 
-        $model->perfil = $model->authAssignment->item_name;
+        $model->perfis = ArrayHelper::map($model->authAssignments, 'item_name', 'item_name');
+
+        $oldPerfis = $model->perfis;
 
         if ($model->load(Yii::$app->request->post())) {
             if (!empty($model->senha)) {
@@ -130,17 +137,71 @@ class UserController extends Controller
                 $model->senha = $oldSenha;
             }
 
-            if ($model->save()) {
-                if ($model->id != User::getIdentidade('id')) {
-                    $mailParams = ['nome' => $model->nome];
+            $transaction = Yii::$app->db->beginTransaction();
 
-                    Mail::send('user-edit', $mailParams, $model->email, 'Alteração nos dados');
+            try {
+                if ($flag = $model->save()) {
+                    $deletedPerfis = array_diff($oldPerfis, $model->perfis);
+
+                    if (!empty($deletedPerfis)) {
+                        AuthAssignment::deleteAll(['item_name' => $deletedPerfis, 'user_id' => $model->id]);
+                    }
+
+                    $savePerfis = array_diff($model->perfis, $oldPerfis);
+
+                    foreach ($savePerfis as $savePerfil) {
+                        $values = [
+                            'item_name' => $savePerfil,
+                            'user_id' => $model->id,
+                            'active' => Status::STATUS_INATIVO,
+                            'created_at' => time(),
+                        ];
+
+                        $modelAuthAssignment = new AuthAssignment();
+                        $modelAuthAssignment->attributes = $values;
+
+                        if (!($flag = $modelAuthAssignment->save(false))) {
+                            $transaction->rollBack();
+                            break;
+                        }
+                    }
+
+                    $perfilActiveExists = AuthAssignment::find()
+                        ->where(['user_id' => $model->id, 'active' => Status::STATUS_ATIVO])
+                        ->count();
+
+                    if (!$perfilActiveExists) {
+                        $modelAuthAssignment = AuthAssignment::findOne(['user_id' => $model->id, 'item_name' => User::PERFIL_ADMINISTRADOR]);
+                        $modelAuthAssignment->active = Status::STATUS_ATIVO;
+
+                        if (! ($flag = $modelAuthAssignment->save(false))) {
+                            $transaction->rollBack();
+                        }
+
+                        $model->orgao_id = Orgao::ORGAO_CGE;
+
+                        if (! ($flag = $model->save())) {
+                            $transaction->rollBack();
+                        }
+                    }
                 }
 
-                Universal::flash();
-                return $redirectHomePage ?
-                    $this->redirect(Yii::$app->homeUrl) :
-                    $this->redirect(['view', 'id' => $model->id]);
+                if ($flag) {
+                    $transaction->commit();
+
+                    if ($model->id != User::getIdentidade('id')) {
+                        $mailParams = ['nome' => $model->nome];
+
+                        Mail::send('user-edit', $mailParams, $model->email, 'Alteração nos dados');
+                    }
+
+                    Universal::flash();
+                    return $redirectHomePage ?
+                        $this->redirect(Yii::$app->homeUrl) :
+                        $this->redirect(['view', 'id' => $model->id]);
+                }
+            } catch (Exception $exception) {
+                $transaction->rollBack();
             }
         }
 

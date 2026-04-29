@@ -62,11 +62,7 @@ class MonitoramentoController extends Controller
 
         $modelAcaoMonitoramento = empty($acaoMonitoramento) ? new AcaoMonitoramento() : $acaoMonitoramento;
 
-        $acaoMonitoramentoRecomendacaos = $modelAcaoMonitoramento->acaoMonitoramentoRecomendacaos;
-
-        $modelsAcaoMonitoramentoRecomendacao = empty($acaoMonitoramentoRecomendacaos) ?
-            [new AcaoMonitoramentoRecomendacao()] :
-            $acaoMonitoramentoRecomendacaos;
+        $modelsAcaoMonitoramentoRecomendacao = $modelAcaoMonitoramento->acaoMonitoramentoRecomendacaos;
 
         $request = Yii::$app->request;
 

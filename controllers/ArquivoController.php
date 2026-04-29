@@ -8,6 +8,7 @@ use yii\filters\VerbFilter;
 use app\components\helpers\Universal;
 use app\models\Arquivo;
 use app\modules\executar\models\AcaoExecucaoArquivo;
+use yii\web\Response;
 
 class ArquivoController extends \yii\web\Controller
 {
@@ -67,5 +68,23 @@ class ArquivoController extends \yii\web\Controller
         }
 
         return $this->redirect(['/site']);
+    }
+
+    public function actionDownload(string $token): Response
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/site/login']);
+        }
+
+        $model = Arquivo::findOne(['token' => $token]);
+
+        if (is_null($model)) {
+            Universal::flash('error', 'Arquivo não encontrado.');
+            return $this->redirect(['/site']);
+        }
+
+        $filePath = Yii::getAlias('@app' . '/' . $model->path);
+
+        return Yii::$app->response->sendFile($filePath, "$model->nome_original.$model->extensao");
     }
 }

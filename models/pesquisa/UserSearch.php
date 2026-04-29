@@ -18,7 +18,7 @@ class UserSearch extends User
     {
         return [
             [['id', 'status', 'cadastrado_por', 'unidade_administrativa_id'], 'integer'],
-            [['nome', 'matricula', 'login', 'senha', 'cargo', 'email', 'telefone', 'orgao_id', 'auth_key', 'password_reset_token', 'created_at', 'perfil'], 'safe'],
+            [['nome', 'masp', 'login', 'senha', 'cargo', 'email', 'telefone', 'orgao_id', 'auth_key', 'password_reset_token', 'created_at', 'perfil'], 'safe'],
         ];
     }
 

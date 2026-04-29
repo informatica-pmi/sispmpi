@@ -117,7 +117,12 @@ $config = [
                 'username' => 'SMTP_USUARIO',
                 'password' => 'SMTP_SENHA',
                 'port' => 'SMTP_PORTA',
-                //'encryption' => 'tls',
+                'encryption' => null,
+                'streamOptions' => [
+                    'ssl' => [
+                        'verify_peer' => false,
+                    ],
+                ],
             ],
             'messageConfig' => [
                 'charset' => 'UTF-8',
@@ -139,6 +144,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '<controller>/<action:(view|update)>/<id:\d+>' => '<controller>/<action>',
+                'arquivo/download/<token:[^/]+>' => 'arquivo/download',
                 [
                     'pattern' => '<controller>/<action:(index)>/<page:\d+>/<id:\d+>',
                     'route' => '<controller>/<action>',

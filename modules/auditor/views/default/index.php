@@ -44,20 +44,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'items' => [
                                         [
                                             'label' => 'Plano de integridade publicado',
-                                            'url' => Yii::getAlias(
-                                                "@web/{$plano->publicacao->planoIntegridadeArquivo->path}"
-                                            ),
-                                            'linkOptions' => [
-                                                'target' => '_blank',
-                                                'rel' => 'noreferrer noopener'
+                                            'url' => [
+                                                '/arquivo/download',
+                                                'token' => $plano->publicacao->planoIntegridadeArquivo->token
                                             ],
                                         ],
                                         [
                                             'label' => 'Plano de ação consolidado',
                                             'url' => !empty($plano->publicacao->planoAcaoArquivo) ?
-                                                Yii::getAlias("@web/{$plano->publicacao->planoAcaoArquivo->path}") :
+                                                [
+                                                    '/arquivo/download',
+                                                    'token' => $plano->publicacao->planoAcaoArquivo->token
+                                                ] :
                                                 '#',
-                                            'linkOptions' => ['target' => '_blank', 'rel' => 'noreferrer noopener'],
                                             'visible' => !empty($plano->publicacao->planoAcaoArquivo),
                                         ],
                                         [

@@ -5,7 +5,7 @@ use app\components\helpers\Universal;
 use app\models\Status;
 
 /* @var $modelAcao app\models\Acao */
-/* @var $modelAcaoExecucao app\modules\executar\models\AcaoExecutar */
+/* @var $modelAcaoExecucao app\modules\executar\models\AcaoExecucao */
 /* @var $fatorLimitanteNomes */
 ?>
 
@@ -109,8 +109,7 @@ use app\models\Status;
 
                                 <?= Html::a(
                                     $index > 0 ? ", {$arquivo->nome_original}" : $arquivo->nome_original,
-                                    "@web/{$arquivo->path}",
-                                    ['target' => '_blank', 'rel' => 'noreferrer noopener']
+                                    ['/arquivo/download', 'token' => $arquivo->token]
                                 ) ?>
                             <?php endforeach; ?>
                         <?php else : ?>
