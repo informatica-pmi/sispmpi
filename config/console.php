@@ -15,7 +15,9 @@ $config = [
     ],
     'components' => [
         'urlManager' => [
-            'baseUrl' => 'ENDERECO_DA_APLICACAO',
+            'baseUrl' => getenv('BASE_URL'),
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
         ],
         'queue' => [
             'class' => \yii\queue\db\Queue::class,

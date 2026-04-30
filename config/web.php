@@ -76,13 +76,13 @@ $config = [
                 'wbraganca\dynamicform\DynamicFormAsset' => [
                     'sourcePath' => '@app/web/js',
                     'js' => [
-                        'yii2-dynamic-form.js',
+                        'yii2-dynamic-form.js',7
                     ],
                 ],
             ],
         ],
         'session' => [
-            'name' => 'NAME_SESSION',
+            'name' => '_pmpi_session_itabirito',
             'cookieParams' => [
                 'sameSite' => PHP_VERSION_ID >= 70300 ? \yii\web\Cookie::SAME_SITE_LAX : null
             ]
@@ -102,7 +102,7 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => [
-                'name' => 'NAME_IDENTITY_COOKIE',
+                'name' => '_pmpi_identity_itabirito',
             ],
         ],
         'errorHandler' => [
@@ -139,6 +139,7 @@ $config = [
         ],
         'db' => $db,
         'urlManager' => [
+            'baseUrl' => getenv('BASE_URL'),
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
