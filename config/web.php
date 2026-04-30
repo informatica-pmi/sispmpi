@@ -91,9 +91,8 @@ $config = [
             'class' => 'app\components\rbac\DbManagerCustom',
         ],
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'COOKIE_VALIDATION_KEY',
-            'csrfParam' => 'NAME_CSRF',
+            'cookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
+            'csrfParam' => '_csrf-pmpi',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
