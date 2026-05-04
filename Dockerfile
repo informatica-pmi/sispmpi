@@ -2,15 +2,18 @@ FROM php:8.2-apache
 
 # Instala dependências do sistema e extensões PHP necessárias
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
+     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     libzip-dev \
     zip \
     unzip \
     git \
+    curl \
+    libonig-dev \
+    libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo_mysql zip
+    && docker-php-ext-install gd pdo_mysql zip mbstring zip intl
 
 # Configura o Git para aceitar o diretório do projeto como seguro
 RUN git config --global --add safe.directory /var/www/html
