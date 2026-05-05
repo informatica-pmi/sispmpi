@@ -112,11 +112,11 @@ $config = [
             'class' => 'yii\swiftmailer\Mailer',
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'SMTP_HOST',
-                'username' => 'SMTP_USUARIO',
-                'password' => 'SMTP_SENHA',
-                'port' => 'SMTP_PORTA',
-                'encryption' => null,
+                'host' => getenv('SMTP_HOST'),         // Lê do seu .env [cite: 7]
+                'username' => getenv('SMTP_USER'),     // Lê do seu .env [cite: 7]
+                'password' => getenv('SMTP_PASS'),     // Lê do seu .env [cite: 7]
+                'port' => getenv('SMTP_PORT'),         // Lê do seu .env [cite: 7]
+                'encryption' => getenv('SMTP_ENCRYPTION') ?: null,
                 'streamOptions' => [
                     'ssl' => [
                         'verify_peer' => false,
@@ -125,7 +125,7 @@ $config = [
             ],
             'messageConfig' => [
                 'charset' => 'UTF-8',
-                'from' => ['EMAIL_ENVIO' => 'NOME_REMETENTE']
+                'from' => [getenv('EMAIL_ENVIO') => getenv('NOME_REMETENTE')]
             ]
         ],
         'log' => [
@@ -172,5 +172,10 @@ if (YII_ENV_DEV) {
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
+
+// Configuração Global do Widget TinyMCE usando o namespace específico do projeto
+\Yii::$container->set('app\components\widgets\TinyMCE', [
+    'apiKey' => getenv('TINYMCE_API_KEY'),
+]);
 
 return $config;
