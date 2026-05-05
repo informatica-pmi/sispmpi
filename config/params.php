@@ -6,7 +6,7 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'bsVersion' => '4.x',
     'emailControlador' => 'EMAIL_LIVRE_DE_NOTIFICACOES_DO_SISTEMA',
-    'tinyMceApiKey' => getenv('TINYMCE_KEY'),
+    'tinyMceApiKey' => getenv('TINYMCE_API_KEY'),
 
     'dateControlDisplay' => [
         Module::FORMAT_DATE => 'php:d/m/Y',
