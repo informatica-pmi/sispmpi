@@ -7,12 +7,12 @@ use yii\helpers\ArrayHelper;
 
 /**
  * Widget TinyMCE customizado para o SisPMPI.
- * Força o carregamento via CDN e define a licença GPL para evitar bloqueios.
+ * Configura o carregamento via CDN e aceita a licença GPL para evitar bloqueios.
  */
 class TinyMCE extends \dosamigos\tinymce\TinyMce
 {
     /**
-     * @var string Chave de API do TinyMCE
+     * @var string Chave de API do TinyMCE.
      */
     public $apiKey;
 
@@ -24,15 +24,13 @@ class TinyMCE extends \dosamigos\tinymce\TinyMce
         // 1. Captura a chave de API (do .env ou params)
         $this->apiKey = $this->apiKey ?: getenv('TINYMCE_API_KEY') ?: (Yii::$app->params['tinyMceApiKey'] ?? null);
 
-        // 2. Configura a URL do script. Se não houver chave, usa 'no-api-key' mas mantém o carregamento via CDN
+        // 2. Define a chave padrão se estiver vazia
         $key = ($this->apiKey && $this->apiKey !== 'no-api-key') ? $this->apiKey : 'no-api-key';
         
-        // Forçamos o script_url para garantir que o Yii2 NÃO carregue a versão local do vendor/assets
-        $this->script_url = "https://cdn.tiny.cloud/1/{$key}/tinymce/6/tinymce.min.js";
-
-        // 3. Configurações de interface e correção de licença
+        // 3. Configurações de interface e aceitação de licença
+        // O campo 'license_key' => 'gpl' é o que remove a mensagem de erro de licença nas versões 6 e 7
         $defaultClientOptions = [
-            'license_key' => 'gpl', // ESSENCIAL: Aceita a licença para remover o bloqueio
+            'license_key' => 'gpl', 
             'menubar' => false,
             'statusbar' => false,
             'plugins' => [
@@ -45,15 +43,23 @@ class TinyMCE extends \dosamigos\tinymce\TinyMce
             'branding' => false,
             'promotion' => false,
             'entity_encoding' => 'raw',
-            // Impede que o TinyMCE procure idiomas localmente se estivermos no CDN
-            'language_url' => null, 
-            'content_style' => 'body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; }'
+            'content_style' => 'body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; }',
+            // Forçamos o carregamento do script via CDN dentro das opções do cliente para evitar UnknownPropertyException
+            'script_url' => "https://cdn.tiny.cloud/1/{$key}/tinymce/6/tinymce.min.js",
         ];
+
+        // Se houver uma chave de API, alguns widgets da 2amigos usam cloudApiKey
+        if ($key !== 'no-api-key') {
+            $this->clientOptions['apiKey'] = $key;
+        }
 
         $this->clientOptions = ArrayHelper::merge($defaultClientOptions, $this->clientOptions);
         
-        // Garante que o ID do campo seja passado corretamente
+        // Configuração do textarea HTML
         $this->options = ArrayHelper::merge(['rows' => 6], $this->options);
+
+        // Define a linguagem para o Asset Bundle do componente pai
+        $this->language = 'pt_BR';
 
         parent::init();
     }
