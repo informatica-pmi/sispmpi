@@ -94,6 +94,7 @@ $config = [
         ],
         'request' => [
             'cookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
+            'trustedHosts' => ['172.17.0.1'], // IP do gateway do Docker (host)
             'csrfParam' => '_csrf-pmpi',
         ],
         'cache' => [
