@@ -35,3 +35,4 @@ COPY . .
 
 # Ajusta permissões
 RUN chown -R www-data:www-data runtime web/assets
+RUN chown -R www-data:www-data /var/www/html/runtime /var/www/html/web/assets
