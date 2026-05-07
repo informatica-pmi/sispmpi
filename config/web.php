@@ -84,7 +84,7 @@ $config = [
         'session' => [
             'name' => '_pmpi_session_itabirito',
             'cookieParams' => [
-                'domain' => 'sispmpic.pmi.mg.gov.br', // Garante que o cookie pertença ao DNS
+                'domain' => 'sispmpi.pmi.mg.gov.br', // Garante que o cookie pertença ao DNS
                 'httpOnly' => true,
                 'sameSite' => PHP_VERSION_ID >= 70300 ? \yii\web\Cookie::SAME_SITE_LAX : null
             ]
@@ -112,7 +112,7 @@ $config = [
             'enableAutoLogin' => true,
             'identityCookie' => [
                 'name' => '_pmpi_identity_itabirito', 
-                'domain' => 'sispmpic.pmi.mg.gov.br', // Adicione aqui também
+                'domain' => 'sispmpi.pmi.mg.gov.br', // Adicione aqui também
                 'httpOnly' => true,
             ],
         ],
