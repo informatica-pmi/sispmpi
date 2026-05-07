@@ -94,7 +94,13 @@ $config = [
         ],
         'request' => [
             'cookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
-            'trustedHosts' => ['172.17.0.1'], // IP do gateway do Docker (host)
+            // O IP 172.17.0.1 é o gateway padrão do Docker (o host visto de dentro do container)
+            'trustedHosts' => [
+                '172.17.0.1' => [
+                    'X-Forwarded-For',
+                    'X-Forwarded-Proto',
+                ],
+            ],
             'csrfParam' => '_csrf-pmpi',
         ],
         'cache' => [
