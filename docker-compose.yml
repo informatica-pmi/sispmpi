@@ -5,7 +5,7 @@ services:
     build: .
     container_name: sispmpi_app
     ports:
-      - "8081:80"
+      - "3004:80"
     volumes:
       - .:/var/www/html
     extra_hosts:

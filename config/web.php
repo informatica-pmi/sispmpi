@@ -84,6 +84,8 @@ $config = [
         'session' => [
             'name' => '_pmpi_session_itabirito',
             'cookieParams' => [
+                'domain' => 'sispmpi.pmi.mg.gov.br', // Garante que o cookie pertença ao DNS
+                'httpOnly' => true,
                 'sameSite' => PHP_VERSION_ID >= 70300 ? \yii\web\Cookie::SAME_SITE_LAX : null
             ]
         ],
@@ -92,6 +94,19 @@ $config = [
         ],
         'request' => [
             'cookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
+            // O IP 172.17.0.1 é o gateway padrão do Docker (o host visto de dentro do container)
+            'trustedHosts' => [
+                // Confia especificamente no IP que o dump nos mostrou
+                '172.23.0.1' => [
+                    'X-Forwarded-For',
+                    'X-Forwarded-Proto',
+                ],
+                // Opcional: Confia em qualquer variação de subrede Docker (faixa 172.16.x.x a 172.31.x.x)
+                '172.16.0.0/12' => [
+                    'X-Forwarded-For',
+                    'X-Forwarded-Proto',
+                ],
+            ],
             'csrfParam' => '_csrf-pmpi',
         ],
         'cache' => [
@@ -102,7 +117,9 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => [
-                'name' => '_pmpi_identity_itabirito',
+                'name' => '_pmpi_identity_itabirito', 
+                'domain' => 'sispmpi.pmi.mg.gov.br', // Adicione aqui também
+                'httpOnly' => true,
             ],
         ],
         'errorHandler' => [
