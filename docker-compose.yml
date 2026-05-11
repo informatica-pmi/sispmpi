@@ -5,7 +5,7 @@ services:
     build: .
     container_name: sispmpi_app
     ports:
-      - "8081:80"
+      - "3004:80"
     volumes:
       - .:/var/www/html
     extra_hosts:
@@ -14,3 +14,11 @@ services:
       - .env
     environment:
       - TZ=America/Sao_Paulo
+  sispmpi_queue:
+    build: .
+    container_name: sispmpi_queue
+    restart: always
+    command: php yii queue/listen --verbose=0
+    env_file: .env
+    extra_hosts:
+      - "host.docker.internal:172.23.0.1" # Mesma rede do host

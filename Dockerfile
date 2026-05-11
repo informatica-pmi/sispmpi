@@ -2,7 +2,7 @@ FROM php:8.2-apache
 
 # Instala dependências do sistema e extensões PHP necessárias
 RUN apt-get update && apt-get install -y \
-     libpng-dev \
+    libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     libzip-dev \
@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo_mysql zip mbstring zip intl
+    # Removido o 'zip' duplicado aqui
+    && docker-php-ext-install gd pdo_mysql zip mbstring intl
 
 # Configura o Git para aceitar o diretório do projeto como seguro
 RUN git config --global --add safe.directory /var/www/html
@@ -31,7 +32,21 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+# Copia os arquivos do projeto para o contêiner
 COPY . .
 
-# Ajusta permissões
+# NOVO: Instala as dependências do Yii2 ignorando pacotes de desenvolvimento (como o Gii)
+RUN composer install --no-dev --optimize-autoloader
+
+# Ajusta permissões das pastas que o Yii2 precisa escrever
 RUN chown -R www-data:www-data runtime web/assets
+
+# NOVO: Copia o script de inicialização para automatizar o yii migrate
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# NOVO: Define o script como porta de entrada
+ENTRYPOINT ["entrypoint.sh"]
+
+# Mantém o Apache rodando em primeiro plano
+CMD ["apache2-foreground"]
