@@ -4,7 +4,7 @@
 echo "Iniciando a verificação de migrações do banco de dados..."
 
 # Executa as migrações automaticamente sem pedir confirmação
-php yii migrate --interactive=0
+YII_ENV=prod php yii migrate --interactive=0
 
 echo "Limpando o cache do Yii 2..."
 php yii cache/flush-all
