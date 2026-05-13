@@ -7,7 +7,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'language' => 'pt-BR',
-    'bootstrap' => ['log', 'admin', 'elaborar', 'executar', 'monitorar', 'avaliar'],
+    'bootstrap' => ['log', 'admin', 'elaborar', 'executar', 'monitorar', 'avaliar', 'queue'],
     'timeZone' => 'America/Sao_Paulo',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -156,22 +156,22 @@ $config = [
     'params' => $params,
 ];
 
-if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module',
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
-    ];
+// if (YII_ENV_DEV) {
+//     // configuration adjustments for 'dev' environment
+//     $config['bootstrap'][] = 'debug';
+//     $config['modules']['debug'] = [
+//         'class' => 'yii\debug\Module',
+//         // uncomment the following to add your IP if you are not connecting from localhost.
+//         //'allowedIPs' => ['127.0.0.1', '::1'],
+//     ];
 
-    $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = [
-        'class' => 'yii\gii\Module',
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
-    ];
-}
+//     $config['bootstrap'][] = 'gii';
+//     $config['modules']['gii'] = [
+//         'class' => 'yii\gii\Module',
+//         // uncomment the following to add your IP if you are not connecting from localhost.
+//         //'allowedIPs' => ['127.0.0.1', '::1'],
+//     ];
+// }
 
 // Configuração Global do Widget TinyMCE usando o namespace específico do projeto
 \Yii::$container->set('app\components\widgets\TinyMCE', [

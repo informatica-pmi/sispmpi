@@ -45,6 +45,9 @@ RUN chown -R www-data:www-data runtime web/assets
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+ENV TZ=America/Sao_Paulo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # NOVO: Define o script como porta de entrada
 ENTRYPOINT ["entrypoint.sh"]
 
