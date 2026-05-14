@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo_mysql zip mbstring zip intl
+    && docker-php-ext-install gd pdo_mysql mbstring zip intl
 
 # Configura o Git para aceitar o diretório do projeto como seguro
 RUN git config --global --add safe.directory /var/www/html
@@ -32,6 +32,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 COPY . .
+
+# Instala todas as dependências, incluindo as de teste/desenvolvimento (Gii e Debug)
+RUN composer update --no-interaction
 
 # Ajusta permissões
 RUN chown -R www-data:www-data runtime web/assets
