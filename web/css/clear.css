@@ -1,0 +1,92 @@
+html,
+body,
+.content-body {
+    height: 100% !important;
+}
+
+html body {
+  color: #4e4d4d;  
+}
+
+.content-body {
+    /* background: linear-gradient(-90deg, #17a2b8, #8db44a); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+*:focus {
+    outline: 0 !important;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+input {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border: 0 !important;
+    color: #4e4d4d !important;
+}
+
+input:focus {
+    outline: none;
+}
+
+::placeholder {
+    color: rgba(78, 77, 77, 0.7) !important;
+}
+
+/* .help-block.invalid-feedback {
+    color: #960025;
+    align-self: flex-start;
+} */
+
+.remember-custom-color::before {
+    background-color: var(--bg-info) !important;
+    border-color: var(--bg-info) !important;
+}
+
+.remember-custom-color::after {
+    background-color: #fff !important;
+}
+
+button[type=submit] {
+    width: 100%;
+    background-color: var(--bg-info);
+    border-color: var(--bg-info);
+}
+
+button[type=submit]:hover,
+button[type=submit]:focus,
+button[type=submit]:active {
+    width: 100%;
+    background-color: rgba(24, 173, 212, 0.8) !important;
+    border-color: rgba(24, 173, 212, 0.8) !important;
+}
+
+.btn-custom-info {
+    background-color: var(--bg-info) !important;
+    border-color: var(--bg-info) !important;
+    color: #fff !important;
+}
+
+.btn-custom-info:hover,
+.btn-custom-info:focus,
+.btn-custom-info:active {
+    width: 100%;
+    background-color: rgba(24, 173, 212, 0.8) !important;
+    border-color: rgba(24, 173, 212, 0.8) !important;
+}
+
+
+a.forget-password {
+    color: #4e4d4d;
+    transition: color 0.2s;
+}
+
+a.forget-password:hover {
+    color: var(--bg-info);
+}
