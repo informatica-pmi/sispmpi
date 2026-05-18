@@ -2,9 +2,10 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=DB_HOST;dbname=DB_NOME',
-    'username' => 'DB_USUARIO',
-    'password' => 'DB_SENHA',
+    // Usando getenv() pegamos os valores injetados pelo Docker ou pelo Servidor
+    'dsn' => 'mysql:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME'),
+    'username' => getenv('DB_USER'),
+    'password' => getenv('DB_PASSWORD'),
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
