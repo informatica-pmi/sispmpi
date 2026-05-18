@@ -38,3 +38,6 @@ tests/_support/_generated
 /tools
 
 .php-cs-fixer.php
+
+# Arquivo de variaveis de ambiente
+.env

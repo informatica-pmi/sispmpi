@@ -6,31 +6,27 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8000:80" # Você acessará o sistema no navegador por http://localhost:8000
+      - "8000:80"
     volumes:
-      # Espelha a pasta atual do WSL para dentro do container
-      # Isso permite que você edite o código e veja a mudança na hora
       - ./:/var/www/html
     environment:
-      # Variáveis de ambiente injetadas no PHP (para o WSL)
-      - DB_HOST=db
-      - DB_NAME=sispmpi
-      - DB_USER=usuariolocal
-      - DB_PASSWORD=senhalocal
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
     depends_on:
       - db
 
   db:
     image: mysql:8.0
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=sispmpi
-      - MYSQL_USER=usuariolocal
-      - MYSQL_PASSWORD=senhalocal
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     ports:
-      - "3306:3306" # Permite que você conecte um DBeaver/DataGrip se quiser inspecionar o banco
+      - "3306:3306"
     volumes:
-      # Volume nomeado para persistir os dados do banco no seu WSL
       - db_data:/var/lib/mysql
 
 volumes:
