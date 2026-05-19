@@ -17,7 +17,9 @@ class TinyMCE extends \dosamigos\tinymce\TinyMce
             'toolbar' => "undo redo | bold italic | alignleft aligncenter alignright alignjustify",
             'entity_encoding' => 'raw',
             'paste_as_text' => true,
-            'content_style' => 'body { font-family: Calibri; }'
+            'content_style' => 'body { font-family: Calibri; }',
+            // Adicionando a chave de licença lida do ambiente
+            'license_key' => getenv('TINYMCE_KEY'),
         ];
         parent::init();
     }
