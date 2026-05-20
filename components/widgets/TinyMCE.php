@@ -18,8 +18,9 @@ class TinyMCE extends \dosamigos\tinymce\TinyMce
             'entity_encoding' => 'raw',
             'paste_as_text' => true,
             'content_style' => 'body { font-family: Calibri; }',
-            // Adicionando a chave de licença lida do ambiente
-            'license_key' => getenv('TINYMCE_KEY'),
+            
+            // Substitua o getenv() por $_SERVER
+            'license_key' => $_SERVER['TINYMCE_KEY'] ?? 'chave_nao_encontrada',
         ];
         parent::init();
     }
