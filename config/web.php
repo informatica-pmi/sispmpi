@@ -92,7 +92,7 @@ $config = [
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'COOKIE_VALIDATION_KEY',
+            'cookieValidationKey' => '092412eedf2fd2a8d4b56120f25c0edea1ede189f94f2b0bb8f98bba44cf5ad3',
             'csrfParam' => 'NAME_CSRF',
         ],
         'cache' => [
