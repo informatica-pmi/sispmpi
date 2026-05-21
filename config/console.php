@@ -29,15 +29,15 @@ $config = [
             'class' => 'yii\swiftmailer\Mailer',
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'SMTP_HOST',
-                'username' => 'SMTP_USUARIO',
-                'password' => 'SMTP_SENHA',
-                'port' => 'SMTP_PORTA',
-                //'encryption' => 'tls',
+                'host' => getenv('SMTP_HOST'),
+                'username' => getenv('SMTP_USUARIO'),
+                'password' => getenv('SMTP_SENHA'),
+                'port' => getenv('SMTP_PORTA'),
+                'encryption' => 'tls', // Ativação obrigatória para servidores Microsoft 365
             ],
             'messageConfig' => [
                 'charset' => 'UTF-8',
-                'from' => ['EMAIL_ENVIO' => 'NOME_REMENTENTE']
+                'from' => [getenv('EMAIL_ENVIO') => getenv('NOME_REMETENTE')]
             ]
         ],
         'authManager' => [

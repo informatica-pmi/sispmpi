@@ -113,11 +113,11 @@ $config = [
             'class' => 'yii\swiftmailer\Mailer',
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'SMTP_HOST',
-                'username' => 'SMTP_USUARIO',
-                'password' => 'SMTP_SENHA',
-                'port' => 'SMTP_PORTA',
-                'encryption' => null,
+                'host' => getenv('SMTP_HOST'),
+                'username' => getenv('SMTP_USUARIO'),
+                'password' => getenv('SMTP_SENHA'),
+                'port' => getenv('SMTP_PORTA'),
+                'encryption' => 'tls', // Ativação obrigatória para servidores Microsoft 365
                 'streamOptions' => [
                     'ssl' => [
                         'verify_peer' => false,
@@ -126,7 +126,7 @@ $config = [
             ],
             'messageConfig' => [
                 'charset' => 'UTF-8',
-                'from' => ['EMAIL_ENVIO' => 'NOME_REMETENTE']
+                'from' => [getenv('EMAIL_ENVIO') => getenv('NOME_REMETENTE')]
             ]
         ],
         'log' => [
