@@ -126,7 +126,11 @@ $config = [
             ],
             'messageConfig' => [
                 'charset' => 'UTF-8',
-                'from' => [getenv('EMAIL_ENVIO') => getenv('NOME_REMETENTE')]
+                'from' => [
+                    ($_SERVER['EMAIL_ENVIO'] ?? 'seu_email_configurado@suaprefeitura.mg.gov.br') 
+                    => 
+                    ($_SERVER['NOME_REMETENTE'] ?? 'SisPMPI')
+                ]
             ]
         ],
         'log' => [
