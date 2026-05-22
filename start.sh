@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # === NOVO: Força o Apache a repassar as variáveis do Docker para o PHP ===
-echo "PassEnv DB_HOST DB_NAME DB_USER DB_PASSWORD TINYMCE_KEY SMTP_HOST SMTP_PORTA SMTP_USUARIO SMTP_SENHA EMAIL_ENVIO NOME_REMETENTE" > /etc/apache2/conf-available/docker-env.confa2enconf docker-env
+echo "PassEnv DB_HOST DB_NAME DB_USER DB_PASSWORD TINYMCE_KEY SMTP_HOST SMTP_PORTA SMTP_USUARIO SMTP_SENHA EMAIL_ENVIO NOME_REMETENTE" > /etc/apache2/conf-available/docker-env.conf
 # =========================================================================
 
 # 1. Verifica se a pasta vendor existe. Se não, roda o composer update.

@@ -63,6 +63,10 @@
         },
         "allow-plugins": {
             "yiisoft/yii2-composer": true
+        },
+	"audit": {
+            "abandoned": "ignore",
+            "block-insecure": false
         }
     },
     "scripts": {
