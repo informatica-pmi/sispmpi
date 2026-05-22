@@ -15,7 +15,7 @@ $config = [
     ],
     'components' => [
         'urlManager' => [
-            'baseUrl' => 'ENDERECO_DA_APLICACAO',
+            'baseUrl' => 'https://sispmpic.pmi.mg.gov.br',
         ],
         'queue' => [
             'class' => \yii\queue\db\Queue::class,
