@@ -89,7 +89,7 @@ class Orgao extends \yii\db\ActiveRecord
             self::TIPO_AUTONOMO => 'Prefeitura Municipal',
             self::TIPO_AUTARQUIA => 'Autarquia',
             self::TIPO_FUNDACAO => 'Fundação',
-            self::TIPO_SEC_ESTADO => 'Secretaria de Estado',
+            self::TIPO_SEC_ESTADO => 'Secretaria Municipal',
             self::TIPO_EMPRESAS_ESTATAIS => 'Empresas Municipais'
         ];
 
