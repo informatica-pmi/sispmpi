@@ -86,11 +86,11 @@ class Orgao extends \yii\db\ActiveRecord
     public static function getTipo($key = null)
     {
         $arr = [
-            self::TIPO_AUTONOMO => 'Órgão Autônomo',
+            self::TIPO_AUTONOMO => 'Prefeitura Municipal',
             self::TIPO_AUTARQUIA => 'Autarquia',
             self::TIPO_FUNDACAO => 'Fundação',
             self::TIPO_SEC_ESTADO => 'Secretaria de Estado',
-            self::TIPO_EMPRESAS_ESTATAIS => 'Empresas Estatais'
+            self::TIPO_EMPRESAS_ESTATAIS => 'Empresas Municipais'
         ];
 
         return is_null($key) ? $arr : $arr[$key];
