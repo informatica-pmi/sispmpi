@@ -101,7 +101,7 @@ AppAsset::register($this);
                         'style' => 'opacity: .8'
                     ]
                 ) .
-                    Html::tag('span', 'PMPI', ['class' => 'brand-text font-weight']),
+                    Html::tag('span', 'PMPIC', ['class' => 'brand-text font-weight']),
                 Yii::$app->homeUrl,
                 ['class' => 'brand-link']
             ) ?>
@@ -276,7 +276,7 @@ AppAsset::register($this);
                                                     <li class="nav-item">
                                                         <?= Html::a(
                                                             Universal::icon('far fa-dot-circle nav-icon') .
-                                                                Html::tag('p', 'Cadastrar CGE'),
+                                                                Html::tag('p', 'Cadastrar CGM'),
                                                             ['@admin/user-cge/create'],
                                                             ['class' => 'nav-link']
                                                         ) ?>
